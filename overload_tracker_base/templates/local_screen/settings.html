@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --main-primary-theme-color: #FFFFFF;
+            --main-secondary-theme-color: #000000;
+            --background-color: #F8F9FA;
+            --main-accent-color: #3DA842;
+            --main-accent-hover: #2d7a30;
+            --main-accent-light: rgba(61, 168, 66, 0.1);
+            --subtext-color: #8C8C8C;
+            --transition: 0.2s ease;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --button-shadow: 0 4px 12px rgba(61, 168, 66, 0.15);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --text-color: #2C2C2C;
+            --text-secondary: #666666;
+            --text-tertiary: #8C8C8C;
+            --text-muted: #B3B3B3;
+            --input-bg: #FFFFFF;
+        }
+
+        [data-theme="dark"] {
+            --main-primary-theme-color: #1A1A1A;
+            --main-secondary-theme-color: #FFFFFF;
+            --background-color: #121212;
+            --main-accent-color: #4CAF50;
+            --main-accent-hover: #45a049;
+            --main-accent-light: rgba(76, 175, 80, 0.15);
+            --subtext-color: #A0A0A0;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --button-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-color: #FFFFFF;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #A0A0A0;
+            --text-muted: #808080;
+            --input-bg: #2C2C2C;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 20px 20px;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .logo_section {
+            display: flex;
+            gap: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo_section img {
+            height: 60px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo_section img.dark-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .logo_section img.light-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .logo_section img.dark-logo {
+            display: block;
+        }
+
+        .menu-open .logo_section img {
+            opacity: 0;
+        }
+
+        .logo_section i {
+            font-size: 28px;
+            color: var(--main-secondary-theme-color);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-open .logo_section i {
+            transform: rotate(180deg);
+        }
+
+        .settings-container {
+            padding: 20px 35px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .settings-section {
+            background-color: var(--main-primary-theme-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .settings-section-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-section-title i {
+            color: var(--main-accent-color);
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item-label {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .settings-item-description {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--main-primary-theme-color);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--main-accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 120px;
+        }
+
+        .select-wrapper select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-size: 13px;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper::after {
+            content: '\25BC';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            pointer-events: none;
+            font-size: 12px;
+        }
+
+        .save-button {
+            background-color: var(--main-accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .save-button:hover {
+            background-color: var(--main-accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .save-button:active {
+            transform: translateY(0);
+        }
+
+        /* Side Menu Styles */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: var(--main-primary-theme-color);
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+            transition: right 0.3s ease;
+            z-index: 1001;
+            padding: 20px;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .menu-header img {
+            height: 40px;
+            width: auto;
+        }
+
+        .menu-header img.dark-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .menu-header img.light-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .menu-header img.dark-logo {
+            display: block;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background-color: var(--main-accent-light);
+            color: var(--main-accent-color);
+        }
+
+        .menu-item.logout-item {
+            color: #ff4444;
+        }
+
+        .menu-item.logout-item:hover {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff0000;
+        }
+
+        .menu-item.logout-item i {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+        }
+
+        .menu-item.logout-item:hover i {
+            background-color: #ff4444;
+            color: white;
+        }
+
+        .menu-item i {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--main-accent-light);
+            border-radius: 50%;
+            color: var(--main-accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover i {
+            transform: scale(1.1);
+            background-color: var(--main-accent-color);
+            color: white;
+        }
+
+        .theme-switch {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-switch:hover {
+            background-color: var(--main-accent-light);
+        }
+
+        .theme-switch i {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--main-accent-light);
+            border-radius: 50%;
+            color: var(--main-accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover i {
+            transform: scale(1.1);
+            background-color: var(--main-accent-color);
+            color: white;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="side-menu">
+        <div class="menu-header">
+            <img src="https://i.postimg.cc/Qtd1Xgbn/Overload-Tracker-Logo-Light.png" alt="overload_container_logo" class="light-logo">
+            <img src="https://i.postimg.cc/nzpTqQ1v/Overload-Tracker-Logo-Dark.png" alt="overload_container_logo" class="dark-logo">
+            <button class="close-menu">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+        <div class="menu-items">
+            <a href="{% url 'home' %}" class="menu-item">
+                <i class='bx bx-home'></i>
+                Home
+            </a>
+            <a href="{% url 'progress' %}" class="menu-item">
+                <i class="bx bx-trending-up"></i>
+                Progress
+            </a>
+            <a href="{% url 'settings' %}" class="menu-item">
+                <i class='bx bx-cog'></i>
+                Settings
+            </a>
+            <a href="{% url 'profile' %}" class="menu-item">
+                <i class='bx bx-user'></i>
+                Profile
+            </a>
+            <div class="theme-switch">
+                <i class='bx bx-moon'></i>
+                <span>Tone</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <a href="{% url 'new_overload' %}" class="menu-item">
+                <i class='bx bx-plus'></i>
+                New Overload
+            </a>
+            <a href="{% url 'logout' %}" class="menu-item logout-item">
+                <i class='bx  bx-arrow-out-up-square-half'></i>
+                Logout
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="logo_section">
+                <img src="https://i.postimg.cc/Qtd1Xgbn/Overload-Tracker-Logo-Light.png" alt="overload_container_logo" class="light-logo">
+                <img src="https://i.postimg.cc/nzpTqQ1v/Overload-Tracker-Logo-Dark.png" alt="overload_container_logo" class="dark-logo">
+                <i class='bx bx-menu-right'></i>
+            </div>
+        </div>
+        <div class="settings-container">
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class='bx bx-palette'></i>
+                    Appearance
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-item-label">Dark Mode</div>
+                        <div class="settings-item-description">Switch between light and dark theme</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class='bx bx-time'></i>
+                    Time & Date
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-item-label">Time Format</div>
+                        <div class="settings-item-description">Choose between 12 and 24 hour format</div>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="time-format">
+                            <option value="12">12 Hour</option>
+                            <option value="24">24 Hour</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-item-label">Date Format</div>
+                        <div class="settings-item-description">Choose your preferred date format</div>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="date-format">
+                            <option value="MDY">MM/DD/YYYY</option>
+                            <option value="DMY">DD/MM/YYYY</option>
+                            <option value="YMD">YYYY/MM/DD</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class='bx bx-bell'></i>
+                    Notifications
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-item-label">Workout Reminders</div>
+                        <div class="settings-item-description">Get reminded about your workout schedule</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="workout-reminders">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-item-label">Progress Updates</div>
+                        <div class="settings-item-description">Receive notifications about your progress</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="progress-updates">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title">
+                    <i class='bx bx-layout'></i>
+                    Display
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-item-label">Home Page Items</div>
+                        <div class="settings-item-description">Number of workouts to show on home page</div>
+                    </div>
+                    <div class="select-wrapper">
+                        <select id="home-items">
+                            <option value="4">4 Items</option>
+                            <option value="6">6 Items</option>
+                            <option value="8">8 Items</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="save-button">Save Changes</button>
+        </div>
+    </div>
+
+    <script>
+        const menuButton = document.querySelector('.logo_section i');
+        const sideMenu = document.querySelector('.side-menu');
+        const closeMenu = document.querySelector('.close-menu');
+        const overlay = document.querySelector('.overlay');
+        const container = document.querySelector('.container');
+        const themeToggle = document.getElementById('theme-toggle');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const saveButton = document.querySelector('.save-button');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeToggle.checked = savedTheme === 'dark';
+            darkModeToggle.checked = savedTheme === 'dark';
+        }
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            container.classList.toggle('menu-open');
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function saveSettings() {
+            // Get all settings values
+            const settings = {
+                theme: darkModeToggle.checked ? 'dark' : 'light',
+                timeFormat: document.getElementById('time-format').value,
+                dateFormat: document.getElementById('date-format').value,
+                workoutReminders: document.getElementById('workout-reminders').checked,
+                progressUpdates: document.getElementById('progress-updates').checked,
+                homeItems: document.getElementById('home-items').value
+            };
+
+            // Save to localStorage
+            localStorage.setItem('settings', JSON.stringify(settings));
+
+            // Show success message (you can implement this)
+            alert('Settings saved successfully!');
+        }
+
+        // Load saved settings
+        const savedSettings = localStorage.getItem('settings');
+        if (savedSettings) {
+            const settings = JSON.parse(savedSettings);
+            darkModeToggle.checked = settings.theme === 'dark';
+            document.getElementById('time-format').value = settings.timeFormat;
+            document.getElementById('date-format').value = settings.dateFormat;
+            document.getElementById('workout-reminders').checked = settings.workoutReminders;
+            document.getElementById('progress-updates').checked = settings.progressUpdates;
+            document.getElementById('home-items').value = settings.homeItems;
+        }
+
+        menuButton.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        themeToggle.addEventListener('change', toggleTheme);
+        darkModeToggle.addEventListener('change', toggleTheme);
+        saveButton.addEventListener('click', saveSettings);
+    </script>
+</body>
+</html> 

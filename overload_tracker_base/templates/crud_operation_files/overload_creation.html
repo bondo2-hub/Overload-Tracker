@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --main-primary-theme-color: #FFFFFF;
+            --main-secondary-theme-color: #000000;
+            --background-color: #F8F9FA;
+            --main-accent-color: #3DA842;
+            --main-accent-hover: #2d7a30;
+            --main-accent-light: rgba(61, 168, 66, 0.1);
+            --text-color: #2C2C2C;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --button-shadow: 0 4px 12px rgba(61, 168, 66, 0.15);
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="dark"] {
+            --main-primary-theme-color: #1A1A1A;
+            --main-secondary-theme-color: #FFFFFF;
+            --background-color: #121212;
+            --main-accent-color: #4CAF50;
+            --main-accent-hover: #45a049;
+            --main-accent-light: rgba(76, 175, 80, 0.15);
+            --text-color: #FFFFFF;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --button-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 20px 20px;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .logo_section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo_section img {
+            height: 60px;
+            width: auto;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo_section img.dark-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .logo_section img.light-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .logo_section img.dark-logo {
+            display: block;
+        }
+
+        .menu-open .logo_section img {
+            opacity: 0;
+        }
+
+        .logo_section i {
+            font-size: 28px;
+            color: var(--main-secondary-theme-color);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-open .logo_section i {
+            transform: rotate(180deg);
+        }
+
+        #user_interface_name {
+            color: var(--main-accent-color);
+            font-weight: 400;
+        }
+
+        h1 {
+            font-weight: 400;
+            font-size: 43px;
+            text-align: center;
+        }
+
+        .new-overload-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--main-accent-color);
+            color: var(--main-primary-theme-color);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: var(--button-shadow);
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            min-width: 160px;
+            text-align: center;
+            z-index: 100;
+        }
+
+        .new-overload-btn:hover {
+            background-color: var(--main-accent-hover);
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 6px 16px rgba(61, 168, 66, 0.25);
+        }
+
+        .new-overload-btn:active {
+            transform: translateX(-50%) translateY(0);
+            box-shadow: var(--button-shadow);
+        }
+
+        .workout-input-container {
+            width: 100%;
+            padding: 0 35px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .add-workout-btn {
+            width: 100%;
+            background-color: transparent;
+            color: var(--main-accent-color);
+            border: 1.5px solid var(--main-accent-light);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 12px 0;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-workout-btn:hover {
+            background-color: var(--main-accent-light);
+            border-color: var(--main-accent-color);
+            transform: translateY(-1px);
+        }
+
+        .add-workout-btn i {
+            font-size: 18px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--main-accent-light);
+            border-radius: 50%;
+            color: var(--main-accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .add-workout-btn:hover i {
+            transform: scale(1.1);
+            background-color: var(--main-accent-color);
+            color: white;
+        }
+
+        .workout-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            padding-right: 40px;
+            animation: slideIn 0.3s ease-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .workout-name-input {
+            flex: 1;
+            position: relative;
+        }
+
+        .workout-name-input select {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-color);
+            background-color: var(--main-primary-theme-color);
+            transition: all 0.3s ease;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .workout-name-input select:focus {
+            outline: none;
+            border-color: var(--main-accent-color);
+            box-shadow: 0 0 0 3px var(--main-accent-light);
+        }
+
+        .workout-name-input i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            font-size: 18px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .workout-name-input::after {
+            content: '\ea4a';
+            font-family: 'boxicons';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            font-size: 18px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .rep-counter {
+            display: flex;
+            align-items: center;
+            background-color: var(--main-primary-theme-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .rep-counter button {
+            width: 40px;
+            height: 100%;
+            border: none;
+            background-color: var(--main-accent-light);
+            color: var(--main-accent-color);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rep-counter button:hover {
+            background-color: var(--main-accent-color);
+            color: white;
+        }
+
+        .rep-counter span {
+            min-width: 40px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.2s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
+        .workout-row.removing {
+            animation: slideOut 0.3s ease-in forwards;
+        }
+
+        .delete-workout-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .delete-workout-btn:hover {
+            opacity: 1;
+            background-color: rgba(255, 68, 68, 0.1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .delete-workout-btn i {
+            font-size: 20px;
+        }
+
+        .rep-counter span.updating {
+            animation: pulse 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: var(--main-primary-theme-color);
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+            transition: right 0.3s ease;
+            z-index: 1001;
+            padding: 20px;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .menu-header img {
+            height: 40px;
+            width: auto;
+        }
+
+        .menu-header img.dark-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .menu-header img.light-logo {
+            display: none;
+        }
+
+        [data-theme="dark"] .menu-header img.dark-logo {
+            display: block;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background-color: var(--main-accent-light);
+            color: var(--main-accent-color);
+        }
+
+        .menu-item.logout-item {
+            color: #ff4444;
+        }
+
+        .menu-item.logout-item:hover {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff0000;
+        }
+
+        .menu-item.logout-item i {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+        }
+
+        .menu-item.logout-item:hover i {
+            background-color: #ff4444;
+            color: white;
+        }
+
+        .menu-item i {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--main-accent-light);
+            border-radius: 50%;
+            color: var(--main-accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover i {
+            transform: scale(1.1);
+            background-color: var(--main-accent-color);
+            color: white;
+        }
+
+        .theme-switch {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-switch:hover {
+            background-color: var(--main-accent-light);
+        }
+
+        .theme-switch i {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--main-accent-light);
+            border-radius: 50%;
+            color: var(--main-accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-switch:hover i {
+            transform: scale(1.1);
+            background-color: var(--main-accent-color);
+            color: white;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--main-primary-theme-color);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--main-accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <div class="side-menu">
+        <div class="menu-header">
+            <img src="https://i.postimg.cc/Qtd1Xgbn/Overload-Tracker-Logo-Light.png" alt="overload_container_logo"
+                class="light-logo">
+            <img src="https://i.postimg.cc/nzpTqQ1v/Overload-Tracker-Logo-Dark.png" alt="overload_container_logo"
+                class="dark-logo">
+            <button class="close-menu">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+        <div class="menu-items">
+            <a href="{% url 'home' %}" class="menu-item">
+                <i class='bx bx-home'></i>
+                Home
+            </a>
+            <a href="{% url 'progress' %}" class="menu-item">
+                <i class="bx bx-trending-up"></i>
+                Progress
+            </a>
+            <a href="{% url 'settings' %}" class="menu-item">
+                <i class='bx bx-cog'></i>
+                Settings
+            </a>
+            <a href="{% url 'profile' %}" class="menu-item">
+                <i class='bx bx-user'></i>
+                Profile
+            </a>
+            <div class="theme-switch">
+                <i class='bx bx-moon'></i>
+                <span>Tone</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <a href="{% url 'new_overload' %}" class="menu-item">
+                <i class='bx bx-plus'></i>
+                New Overload
+            </a>
+            <a href="{% url 'logout' %}" class="menu-item logout-item">
+                <i class='bx  bx-arrow-out-up-square-half'></i>
+                Logout
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="logo_section">
+                <img src="https://i.postimg.cc/Qtd1Xgbn/Overload-Tracker-Logo-Light.png" alt="overload_container_logo"
+                    class="light-logo">
+                <img src="https://i.postimg.cc/nzpTqQ1v/Overload-Tracker-Logo-Dark.png" alt="overload_container_logo"
+                    class="dark-logo">
+                <i class='bx bx-menu-right'></i>
+            </div>
+        </div>
+        <h1>New <span id="user_interface_name">Overload</span></h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="workout-input-container">
+                <div class="workout-row">
+                    <div class="workout-name-input">
+                        <i class='bx bx-dumbbell'></i>
+                        <select name="workout" class="workout-select">
+                            <option value="">Select a workout</option>
+                            {% for workout in form.workout.field.queryset %}
+                            <option value="{{ workout.id }}">{{ workout.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="rep-counter">
+                        <button type="button" class="decrement">-</button>
+                        <span>8</span>
+                        <button type="button" class="increment">+</button>
+                        <input type="hidden" name="reps" value="8" class="rep-counter-input">
+                    </div>
+                    <button type="button" class="delete-workout-btn">
+                        <i class='bx bx-trash'></i>
+                    </button>
+                </div>
+                <button type="button" class="add-workout-btn">
+                    <i class='bx bx-plus'></i>
+                    Add Workout
+                </button>
+            </div>
+            <button type="submit" class="new-overload-btn">Submit Overload</button>
+        </form>
+    </div>
+    <script>
+        const menuButton = document.querySelector('.logo_section i');
+        const sideMenu = document.querySelector('.side-menu');
+        const closeMenu = document.querySelector('.close-menu');
+        const overlay = document.querySelector('.overlay');
+        const container = document.querySelector('.container');
+        const themeToggle = document.getElementById('theme-toggle');
+        const form = document.querySelector('form');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeToggle.checked = savedTheme === 'dark';
+        }
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            container.classList.toggle('menu-open');
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        menuButton.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        themeToggle.addEventListener('change', toggleTheme);
+
+        // Add rep counter functionality
+        const repCounter = document.querySelector('.rep-counter');
+        const decrementBtn = repCounter.querySelector('.decrement');
+        const incrementBtn = repCounter.querySelector('.increment');
+        const repSpan = repCounter.querySelector('span');
+        const repInput = repCounter.querySelector('input');
+
+        function updateRepCounter(value) {
+            repSpan.textContent = value;
+            repInput.value = value;
+            repSpan.classList.add('updating');
+            setTimeout(() => repSpan.classList.remove('updating'), 300);
+        }
+
+        decrementBtn.addEventListener('click', () => {
+            let count = parseInt(repSpan.textContent);
+            if (count > 1) {
+                updateRepCounter(count - 1);
+            }
+        });
+
+        incrementBtn.addEventListener('click', () => {
+            let count = parseInt(repSpan.textContent);
+            updateRepCounter(count + 1);
+        });
+
+        // Form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const workoutSelect = document.querySelector('.workout-select');
+            if (!workoutSelect.value) {
+                alert('Please select a workout');
+                return;
+            }
+
+            form.submit();
+        });
+
+        // Add delete functionality
+        const deleteBtn = document.querySelector('.delete-workout-btn');
+        deleteBtn.addEventListener('click', () => {
+            const workoutRow = document.querySelector('.workout-row');
+            workoutRow.classList.add('removing');
+            setTimeout(() => workoutRow.remove(), 300);
+        });
+
+        // Add workout button functionality
+        const addWorkoutBtn = document.querySelector('.add-workout-btn');
+        addWorkoutBtn.addEventListener('click', () => {
+            const workoutRow = document.querySelector('.workout-row').cloneNode(true);
+            
+            // Reset the new row
+            const select = workoutRow.querySelector('select');
+            select.value = '';
+            
+            // Clone the select options from the original select
+            const originalSelect = document.querySelector('.workout-row select');
+            select.innerHTML = originalSelect.innerHTML;
+            
+            const repCounter = workoutRow.querySelector('.rep-counter');
+            const span = repCounter.querySelector('span');
+            const input = repCounter.querySelector('input');
+            span.textContent = '8';
+            input.value = '8';
+            
+            // Add event listeners to the new row
+            const decrementBtn = workoutRow.querySelector('.decrement');
+            const incrementBtn = workoutRow.querySelector('.increment');
+            const deleteBtn = workoutRow.querySelector('.delete-workout-btn');
+
+            decrementBtn.addEventListener('click', () => {
+                let count = parseInt(span.textContent);
+                if (count > 1) {
+                    span.textContent = count - 1;
+                    input.value = count - 1;
+                    span.classList.add('updating');
+                    setTimeout(() => span.classList.remove('updating'), 300);
+                }
+            });
+
+            incrementBtn.addEventListener('click', () => {
+                let count = parseInt(span.textContent);
+                span.textContent = count + 1;
+                input.value = count + 1;
+                span.classList.add('updating');
+                setTimeout(() => span.classList.remove('updating'), 300);
+            });
+
+            deleteBtn.addEventListener('click', () => {
+                workoutRow.classList.add('removing');
+                setTimeout(() => workoutRow.remove(), 300);
+            });
+
+            // Insert the new row before the Add Workout button
+            document.querySelector('.workout-input-container').insertBefore(workoutRow, addWorkoutBtn);
+        });
+    </script>
+</body>
+
+</html>
