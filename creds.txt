@@ -1,0 +1,8 @@
+Postgres cluster overloadtracker-db created
+  Username:    postgres
+  Password:    jGtmsXyxH8nFuDN
+  Hostname:    overloadtracker-db.internal
+  Flycast:     fdaa:1b:709d:0:1::7
+  Proxy port:  5432
+  Postgres port:  5433
+  Connection string: postgres://postgres:jGtmsXyxH8nFuDN@overloadtracker-db.flycast:5432
